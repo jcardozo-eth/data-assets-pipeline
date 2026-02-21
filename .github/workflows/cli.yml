@@ -12,9 +12,11 @@ permissions:
 jobs:
   check:
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/eth-library/nix-aerie-python:latest
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup-nix-env
-
-      - name: Run CLI quality checks
-        run: dap check --scope cli
+      # activates nix flakes shell via .envrc
+      - uses: eth-library/nix-aerie/.github/actions/direnv-run@main
+        with:
+          command: dap check --scope cli
